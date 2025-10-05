@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Fiverr Auto Reloader</title>
+  <meta charset="UTF-8">
+  <title>Auto Reloader Link Auto Reloader</title>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
       background: #0d1117;
       color: #e6edf3;
-      width: 280px;
+      width: 300px;
       padding: 16px;
     }
+
     h3 {
       margin: 0 0 10px;
       text-align: center;
       color: #58a6ff;
     }
+
     label {
       display: block;
       margin-top: 10px;
       font-size: 14px;
     }
+
     input {
       width: 100%;
       margin-top: 4px;
@@ -30,6 +34,7 @@
       background: #161b22;
       color: #fff;
     }
+
     button {
       width: 100%;
       padding: 8px;
@@ -40,22 +45,40 @@
       font-weight: bold;
       transition: 0.3s;
     }
-    #startBtn { background: #238636; color: white; }
-    #startBtn:hover { background: #2ea043; }
-    #stopBtn { background: #da3633; color: white; display: none; }
-    #stopBtn:hover { background: #f85149; }
 
-    /* Modal Styles */
+    #startBtn {
+      background: #238636;
+      color: white;
+    }
+
+    #startBtn:hover {
+      background: #2ea043;
+    }
+
+    #stopBtn {
+      background: #da3633;
+      color: white;
+      display: none;
+    }
+
+    #stopBtn:hover {
+      background: #f85149;
+    }
+
+    /* Modal style */
     .modal {
-      display: none; 
+      display: none;
       position: fixed;
       z-index: 100;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.75);
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.75);
       justify-content: center;
       align-items: center;
     }
+
     .modal-content {
       background-color: #161b22;
       padding: 20px;
@@ -63,33 +86,53 @@
       text-align: center;
       width: 90%;
     }
-    .modal-content h2 { margin: 0 0 10px; color: #58a6ff; }
-    .modal-content button { width: auto; margin-top: 15px; padding: 6px 12px; }
+
+    .modal-content h2 {
+      margin: 0 0 12px;
+      color: #58a6ff;
+      font-size: 18px;
+    }
+
+    .modal-content button {
+      background: #da3633;
+      color: white;
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .modal-content button:hover {
+      background: #f85149;
+    }
   </style>
 </head>
+
 <body>
-  <h3>Auto Reloader Link</h3>
+  <h3>Auto Reloader with Link</h3>
 
   <label>Reload Interval (seconds):</label>
-  <input id="timeInput" type="number" placeholder="e.g. 60" />
+  <input id="timeInput" type="number" placeholder="60" />
 
-  <label>Main Fiverr Link:</label>
-  <input id="mainLink" type="text" placeholder="https://www.fiverr.com/dashboard" />
+  <label>Main Link:</label>
+  <input id="mainLink" type="text" placeholder="https://www.your-site.com/dashboard" />
 
-  <label>Next Fiverr Link:</label>
-  <input id="nextLink" type="text" placeholder="https://www.fiverr.com/messages" />
+  <label>Next Link:</label>
+  <input id="nextLink" type="text" placeholder="https://www.your-site.com/messages" />
 
-  <button id="startBtn">Start Infinite Reload</button>
+  <button id="startBtn">Start</button>
   <button id="stopBtn">Stop</button>
 
-  <!-- Modal for countdown -->
+  <!-- Countdown Modal -->
   <div id="countdownModal" class="modal">
     <div class="modal-content">
-      <h2 id="countdown">⏳ Countdown</h2>
-      <button id="cancelBtn">Cancel</button>
+      <h2 id="countdownText">⏳ Countdown</h2>
+      <button id="modalStopBtn">Stop</button>
     </div>
   </div>
 
   <script src="popup.js"></script>
 </body>
+
 </html>

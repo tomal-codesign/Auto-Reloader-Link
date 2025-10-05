@@ -1,12 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "Auto Reloader Link",
-  "version": "2.4",
-  "description": "Auto reload Fiverr pages with countdown, infinite cycle, and link switching.",
-  "permissions": ["tabs", "scripting", "activeTab", "storage"],
+  "name": "Multi-Tab Auto Reloader with Link",
+  "version": "3.0",
+  "description": "Reload multiple Auto Reloader Link tabs with independent countdowns and link switching.",
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Auto Reloader Link",
+    "default_title": "Auto Reloader with Link",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",

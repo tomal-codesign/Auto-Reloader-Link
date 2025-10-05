@@ -3,16 +3,15 @@ const mainLinkInput = document.getElementById("mainLink");
 const nextLinkInput = document.getElementById("nextLink");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
-
+const modalStopBtn = document.getElementById("modalStopBtn");
 const countdownModal = document.getElementById("countdownModal");
-const countdownDisplay = document.getElementById("countdown");
-const cancelBtn = document.getElementById("cancelBtn");
+const countdownText = document.getElementById("countdownText");
 
-// Load saved settings
-chrome.storage.local.get(["seconds", "mainLink", "nextLink"], (data) => {
-  if (data.seconds) timeInput.value = data.seconds;
-  if (data.mainLink) mainLinkInput.value = data.mainLink;
-  if (data.nextLink) nextLinkInput.value = data.nextLink;
+let activeTabId = null;
+
+// Get current active tab
+chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+  if (tabs.length > 0) activeTabId = tabs[0].id;
 });
 
 // Start button
@@ -20,38 +19,30 @@ startBtn.addEventListener("click", () => {
   const seconds = parseInt(timeInput.value);
   const mainLink = mainLinkInput.value.trim();
   const nextLink = nextLinkInput.value.trim();
+  if (!seconds || !mainLink) return;
 
-  if (!seconds || !mainLink) {
-    alert("Enter valid time & main link!");
-    return;
-  }
-
-  chrome.storage.local.set({ seconds, mainLink, nextLink });
-
-  chrome.runtime.sendMessage({
-    action: "start",
-    seconds,
-    mainLink,
-    nextLink
-  });
+  chrome.runtime.sendMessage({ action: "start", tabId: activeTabId, seconds, mainLink, nextLink });
 });
 
 // Stop button
 stopBtn.addEventListener("click", () => {
-  chrome.runtime.sendMessage({ action: "stop" });
+  chrome.runtime.sendMessage({ action: "stop", tabId: activeTabId });
 });
 
-// Cancel button in modal
-cancelBtn.addEventListener("click", () => {
-  chrome.runtime.sendMessage({ action: "stop" });
+// Modal stop button
+modalStopBtn.addEventListener("click", () => {
+  chrome.runtime.sendMessage({ action: "stop", tabId: activeTabId });
 });
 
 // Listen for background messages
 chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.tabId !== activeTabId) return;
+
   if (msg.action === "updateCountdown") {
-    countdownDisplay.textContent = `Next reload in ${msg.remaining}s`;
-    countdownModal.style.display = "flex"; // show modal
+    countdownText.textContent = `Next reload in ${msg.remaining}s`;
+    countdownModal.style.display = "flex";
   }
+
   if (msg.action === "running") {
     startBtn.style.display = "none";
     stopBtn.style.display = "block";
@@ -60,12 +51,13 @@ chrome.runtime.onMessage.addListener((msg) => {
     nextLinkInput.disabled = true;
     countdownModal.style.display = "flex";
   }
+
   if (msg.action === "stopped") {
     startBtn.style.display = "block";
     stopBtn.style.display = "none";
     timeInput.disabled = false;
     mainLinkInput.disabled = false;
     nextLinkInput.disabled = false;
-    countdownModal.style.display = "none"; // hide modal
+    countdownModal.style.display = "none";
   }
 });
